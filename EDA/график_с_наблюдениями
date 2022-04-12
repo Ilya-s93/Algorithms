@@ -1,0 +1,60 @@
+for i in model:
+
+    a = pop_gor.query('0 < Пробег <= 9000000').reset_index(drop=True)
+
+    a = a[a['Модель'] == i]
+
+    fig, ax = plt.subplots(figsize=(30, 12))
+
+    ax = sns.boxplot(x="Город", y = "Пробег", data=a, order = city)
+
+   
+
+    # Calculate number of obs per group & median to position labels
+
+    medians = a.groupby(['Город'])['Пробег'].median().reindex(city).values
+
+    nobs = a['Город'].value_counts().reindex(city).values
+
+    nobs = [str(x) for x in nobs.tolist()]
+
+    nobs = ["n: " + i for i in nobs]
+
+
+    # Add it to the plot
+
+    pos = range(len(nobs))
+
+    for tick,label in zip(pos,ax.get_xticklabels()):
+
+        ax.text(pos[tick],
+
+                medians[tick] + 5.03,
+
+                nobs[tick],
+
+                horizontalalignment='center',
+
+                size='x-small',
+
+                color='w',
+
+                weight='semibold',
+
+                fontsize=20)
+
+   
+
+    fig.suptitle(f'{i}', fontsize=30)
+
+    plt.xticks(fontsize=20)
+
+    plt.yticks(fontsize=20)
+
+    plt.xlabel('Город', fontsize=18)
+
+    plt.ylabel('Стоимость', fontsize=18)
+
+    plt.show()
+    
+
